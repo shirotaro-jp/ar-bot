@@ -12,19 +12,26 @@ var subscriptionKey = "586252c420c649ff8ef5bf5cf7b8eab8";
 var serviceRegion = "eastasia"; // e.g., "westus"
 //var filename = "wav/kato.wav"; // 16000 Hz, Mono
 
-exports.stt = function(filename, callback) {
+exports.stt = function(file, callback) {
   // create the push stream we need for the speech sdk.
   var pushStream = sdk.AudioInputStream.createPushStream();
 
+
   // open the file and push it to the push stream.
-  fs.createReadStream(filename).on('data', function(arrayBuffer) {
+  file.on('data', function(arrayBuffer) {
     pushStream.write(arrayBuffer.buffer);
   }).on('end', function() {
     pushStream.close();
   });
 
+  /*
+  pushStream.write(file);
+  pushStream.close();
+  */
+
   // we are done with the setup
-  console.log("Now recognizing from: " + filename);
+  //console.log("Now recognizing from: " + filename);
+  console.log("ここまでok");
 
   // now create the audio-config pointing to our stream and
   // the speech config specifying the language.
@@ -40,7 +47,7 @@ exports.stt = function(filename, callback) {
   // start the recognizer and wait for a result.
   recognizer.recognizeOnceAsync(
     function (result) {
-      //console.log(result);
+      console.log(result);
 
       recognizer.close();
       recognizer = undefined;

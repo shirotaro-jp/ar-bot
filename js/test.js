@@ -133,10 +133,13 @@ var exportWAV = function(audioData) {
   var dataview = encodeWAV(mergeBuffers(audioData), audioContext.sampleRate);
   var audioBlob = new Blob([dataview], { type: 'audio/wav' });
 
+  return audioBlob;
+  /*
   var myURL = window.URL || window.webkitURL;
   var url = myURL.createObjectURL(audioBlob);
 
   return url;
+  */
 };
 
 var localMediaStream = null;
@@ -169,6 +172,11 @@ $(document).ready(function(){
   // ** Start #1 **
   $('#start').click(function(){
     console.log('#1');
+    localMediaStream = null;
+    localScriptProcessor = null;
+    audioData = []; // 録音データ
+    audioContext = undefined;
+
     audioContext = new AudioContext();
 
     navigator.mediaDevices.getUserMedia({ audio: true }).then(handleSuccess);
@@ -178,17 +186,40 @@ $(document).ready(function(){
 
   // ** Stop #2 **
   $('#stop').click(function() {
-    var filename = exportWAV(audioData);
-    console.log("#2", filename);
+    var wav = exportWAV(audioData);
+/*
+    var fd = new FormData();
+    fd.append('fname', 'test.wav');
+    fd.append('data', wav);
+*/
+    console.log("#2", wav);
     $('#stop').hide();
 
-    audioContext.colse();
 
+    //audioContext.colse();
+    var oReq = new XMLHttpRequest();
+    oReq.open("POST", 'stt', true);
+    oReq.onload = function (oEvent) {
+      console.log("#3", oEvent.target.response);
+      $('#start').show();
+    };
+
+    oReq.send(wav);
+    /*
     // ** wav -> text #3 **
-    $.post('stt', filename).done(function(data){
+    $.ajax({
+      type: 'POST',
+      url: 'stt',
+      dataType : "text",
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+      data: wav,
+      processData: false,
+      contentType: false
+    }).done(function(data){
       console.log("#3", data);
       $('#start').show();
-    });
+    })
+    */;
   });
 
 });
