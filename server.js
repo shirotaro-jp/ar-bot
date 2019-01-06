@@ -6,7 +6,6 @@ server.on('request', doRequest);
 
 // ファイルモジュールを読み込む
 var fs = require('fs');
-var qs = require('querystring');
 
 // リクエストの処理
 function doRequest(req, res) {
@@ -56,11 +55,16 @@ function doRequest(req, res) {
     */
   } else if('/bot' == url) {
   } else if('/tts' == url) {
+  } else if('/js/test.js' == url) {
+    fs.readFile('./'+url, 'UTF-8', function (err, data) {
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      res.write(data);
+      res.end();
+    });
   } else {
     fs.readFile('./'+url, 'UTF-8', function (err, data) {
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write(data);
-        res.end();
+      res.writeHead(404, {'Content-Type': 'text/plain'});
+      res.end();
     });
   }
 }
