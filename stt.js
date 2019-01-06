@@ -10,9 +10,9 @@ var fs = require("fs");
 // through the speech recognizer.
 var subscriptionKey = "586252c420c649ff8ef5bf5cf7b8eab8";
 var serviceRegion = "eastasia"; // e.g., "westus"
-var filename = "wav/kato.wav"; // 16000 Hz, Mono
+//var filename = "wav/kato.wav"; // 16000 Hz, Mono
 
-exports.stt = function(callback) {
+exports.stt = function(filename, callback) {
   // create the push stream we need for the speech sdk.
   var pushStream = sdk.AudioInputStream.createPushStream();
 

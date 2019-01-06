@@ -1,5 +1,4 @@
 const http = require('http');
-// const hostname = '127.0.0.1';
 const port = 80;
 
 var server = http.createServer();
@@ -19,14 +18,18 @@ function doRequest(req, res) {
         res.end();
     });
   } else if('/stt' == url) {
-    var data = require('./index.js');
-    function callback(data) {
-      console.log(data.privText);
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.write(data.privText);
-      res.end();
-    }
-    data.stt(callback);
+    req.on('data', function (filename) {
+      var data = require('./stt.js');
+      function callback(d) {
+        console.log(d.privText);
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write(d.privText);
+        res.end();
+      }
+      data.stt(filename, callback);
+    });
+  } else if('/bot' == url) {
+  } else if('/tts' == url) {
   } else {
     fs.readFile('./'+url, 'UTF-8', function (err, data) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
