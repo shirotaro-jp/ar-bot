@@ -147,8 +147,11 @@ var localScriptProcessor = null;
 var audioData = []; // 録音データ
 
 var bufferSize = 2048;
+var recordingFlg = false;
 
 var onAudioProcess = function(e) {
+  if (!recordingFlg) return;
+
   var input = e.inputBuffer.getChannelData(0);
   var bufferData = new Float32Array(bufferSize);
   for (var i = 0; i < bufferSize; i++) {
@@ -264,40 +267,43 @@ $(document).ready(function(){
     }
 
     console.log('#1');
-    localMediaStream = null;
-    localScriptProcessor = null;
-    audioData = []; // 録音データ
 
-    audioContext.resume().then(() => {
+    audioData = []; // 録音データ
+    console.log('state: '+audioContext.state);
+
+//    audioContext.resume().then(() => {
+      recordingFlg = true;
       $('#start').hide();
       $('#stop').show();
-    });
+//    });
 
   });
 
   // ** Stop #2 **
   $('#stop').click(function() {
-    var wav = exportWAV(audioData);
-    console.log("#2", wav);
     $('#stop').hide();
 
-   audioContext.suspend().then(() => {
-     var oReq = new XMLHttpRequest();
-     oReq.open("POST", 'stt', true);
-     oReq.onload = function (oEvent) {
-       var message = oEvent.target.response;
-       console.log("#3", message);
-       sendMessage(convId, message, function(retMessage){
-         console.log("#4", retMessage);
-         $('#botText').append('<p>'+retMessage+'</p>');
-         $('#start').show();
-       });
-     };
+  //  audioContext.suspend().then(() => {
+      recordingFlg = false;
 
-     oReq.send(wav);
-   });
+      var wav = exportWAV(audioData);
+      console.log("#2", wav);
+
+      var oReq = new XMLHttpRequest();
+      oReq.open("POST", 'stt', true);
+      oReq.onload = function (oEvent) {
+        var message = oEvent.target.response;
+        console.log("#3", message);
+        sendMessage(convId, message, function(retMessage){
+          console.log("#4", retMessage);
+          $('#botText').append('<p>'+retMessage+'</p>');
+          $('#start').show();
+        });
+      };
+
+      oReq.send(wav);
+//    });
   });
-
 
   audioContext = new AudioContext();
   navigator.mediaDevices.getUserMedia({ audio: true }).then(handleSuccess);
