@@ -297,5 +297,5 @@ $(document).ready(function(){
 
     oReq.send(wav);
   });
-
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(handleSuccess);
 });

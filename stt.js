@@ -55,9 +55,10 @@ exports.stt = function(file, callback) {
       callback(result);
     },
     function (err) {
-      console.trace("err - " + err);
+      console.log("err - ");
 
       recognizer.close();
       recognizer = undefined;
+      callback(result);
     });
 }

@@ -23,9 +23,15 @@ function doRequest(req, res) {
 
     var data = require('./stt.js');
     function callback(d) {
-      console.log(d.privText);
+      if(d.privText != undefined){
+        console.log(d.privText);
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write(d.privText);
+      }else{
+      console.log("失敗したよ");
       res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.write(d.privText);
+      res.write("失敗したよ");
+      }
       res.end();
     }
     data.stt(req, callback);
@@ -62,10 +68,10 @@ function doRequest(req, res) {
       res.end();
     });
   } else {
-    // fs.readFile('./'+url, 'UTF-8', function (err, data) {
-    //   res.writeHead(404, {'Content-Type': 'text/plain'});
-    //   res.end();
-    // });
+    fs.readFile('./'+url, 'UTF-8', function (err, data) {
+      res.writeHead(404, {'Content-Type': 'text/plain'});
+      res.end();
+    });
   }
 }
 
