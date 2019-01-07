@@ -3,13 +3,13 @@ const request = require('request');
 // Requires fs to write synthesized speech to a file
 const fs = require('fs');
 // Requires readline-sync to read command line inputs
-const readline = require('readline-sync');
+//const readline = require('readline-sync');
 
 
 /*
  * These lines will attempt to read your subscription key from an environment
  * variable. If you prefer to hardcode the subscription key for ease of use,
- * replace process.env.SUBSCRIPTION_KEY with your subscription key as a string.  
+ * replace process.env.SUBSCRIPTION_KEY with your subscription key as a string.
  */
 const subscriptionKey = "586252c420c649ff8ef5bf5cf7b8eab8";
 if (!subscriptionKey) {
@@ -17,10 +17,10 @@ if (!subscriptionKey) {
 };
 
 // Prompts the user to input text.
-let text = readline.question('What would you like to convert to speech? ');
+//let text = readline.question('What would you like to convert to speech? ');
 
 
-function textToSpeech(subscriptionKey, saveAudio) {
+function textToSpeech(subscriptionKey, saveAudio, text, callback) {
     let options = {
         method: 'POST',
         uri: 'https://eastasia.api.cognitive.microsoft.com/sts/v1.0/issuetoken',
@@ -35,7 +35,7 @@ function textToSpeech(subscriptionKey, saveAudio) {
         if (!error && response.statusCode == 200) {
             //This is the callback to our saveAudio function.
             // It takes a single argument, which is the returned accessToken.
-            saveAudio(body)
+            saveAudio(body, text, callback);
         }
         else {
           throw new Error(error);
@@ -48,7 +48,7 @@ function textToSpeech(subscriptionKey, saveAudio) {
 // Make sure to update User-Agent with the name of your resource.
 // You can also change the voice and output formats. See:
 // https://docs.microsoft.com/azure/cognitive-services/speech-service/language-support#text-to-speech
-function saveAudio(accessToken) {
+function saveAudio(accessToken, text, callback) {
     let options = {
         method: 'POST',
         baseUrl: 'https://eastasia.tts.speech.microsoft.com',
@@ -71,12 +71,15 @@ function saveAudio(accessToken) {
       else {
         throw new Error(error);
       }
-      console.log("Your file is ready.\n")
+      console.log("Your file is ready.\n");
+      callback(body);
     }
     // Pipe the response to file.
-    request(options, convertText).pipe(fs.createWriteStream('sample.wav'));
+    // request(options, convertText).pipe(fs.createWriteStream('sample.wav'));
+    request(options, convertText);
 }
 
-
-// Start the sample app.
-textToSpeech(subscriptionKey, saveAudio);
+exports.tts = function(text, callback) {
+  // Start the sample app.
+  textToSpeech(subscriptionKey, saveAudio, text, callback);
+}

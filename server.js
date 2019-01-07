@@ -19,9 +19,6 @@ function doRequest(req, res) {
         res.end();
     });
   } else if('/stt' == url) {
-    //var out = fs.createWriteStream('test.wav');
-    //req.pipe(out);
-
     var data = require('./stt.js');
     function callback(d) {
       if(d.privText != undefined){
@@ -41,29 +38,7 @@ function doRequest(req, res) {
     }
     data.stt(req, callback);
 
-    /*
-    var file = '';
-    //req.setEncoding('utf8');
-    req.on('data', function(chunk) {
-      file += chunk;
-    });
-    req.on('end', function() {
-      var data = require('./stt.js');
-      function callback(d) {
-        console.log(d.privText);
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write(d.privText);
-        res.end();
-      }
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.write(file);
-      res.end();
-      //console.log(file);
-      //var f = qs.parse(file);
-      //console.log(f);
-      //data.stt(file, callback);
-    });
-    */
+    
   } else if('/img/icon.jpeg' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
@@ -108,6 +83,24 @@ function doRequest(req, res) {
     });
   } else if('/bot' == url) {
   } else if('/tts' == url) {
+    var data = require('./tts.js');
+    function callback(wav) {
+      //console.log(wav);
+      res.writeHead(200, {'Content-Type': 'binary'});
+      res.write(wav, 'binary');
+      res.end();
+    }
+    var body = '';
+    req.on('data', function (d) {
+      body += d;
+      if (body.length > 1e6) {
+        request.connection.destroy();
+      }
+    }).on('end', function () {
+      var post = JSON.parse(body);
+      console.log(post['data']);
+      data.tts(post['data'], callback);
+    });
   } else if('/js/test.js' == url) {
     fs.readFile('./'+url, 'UTF-8',function (err, data) {
       res.writeHead(200, {'Content-Type': 'text/plain'});

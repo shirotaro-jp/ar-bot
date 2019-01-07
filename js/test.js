@@ -17,6 +17,8 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 var AudioContext = window.AudioContext || window.webkitAudioContext || false;
 
 var audioContext;
+audioContext = new AudioContext();
+audioContext.close();
 
 // 位置情報取得
 var compassHeading=1;
@@ -256,6 +258,24 @@ function getMessage(cId, wmark, callback) {
   }, 1000);
 }
 
+// サウンドを再生
+var playSound = function(buffer) {
+  // source を作成
+  var source = audioContext.createBufferSource();
+  // buffer をセット
+  source.buffer = buffer;
+  // context に connect
+  source.connect(audioContext.destination);
+  // 再生
+  source.start(0);
+};
+
+function string_to_buffer(src) {
+  return (new Uint16Array([].map.call(src, function(c) {
+    return c.charCodeAt(0)
+  }))).buffer;
+}
+
 /* <-ここまでbot- */
 
 $(document).ready(function(){
@@ -301,7 +321,29 @@ $(document).ready(function(){
         sendMessage(convId, message, function(retMessage){
           console.log("#4", retMessage);
           $('#botText').append('<p>'+retMessage+'</p>');
-          $('#start').show();
+
+          var req = new XMLHttpRequest();
+          req.open("POST", '/tts', true);
+          req.responseType = "arraybuffer";
+          req.setRequestHeader("Content-Type", "application/json");
+          req.onreadystatechange = function (oEvent) { // 状態が変化すると関数が呼び出されます。
+            if (req.readyState === 4) {
+              if (req.status === 0 || req.status === 200) {
+                var resWav = req.response;
+                console.log('#5', resWav);
+                // サウンドを読み込む
+
+                audioContext.decodeAudioData(resWav, function(buffer) {
+                  console.log('play');
+                  // コールバックを実行
+                  playSound(buffer);
+                });
+
+                $('#start').show();
+              }
+            }
+          }
+          req.send(JSON.stringify({"data": retMessage}));
         });
       };
 
