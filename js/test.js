@@ -78,10 +78,6 @@ window.addEventListener('deviceorientation', function(event) {
   }
 });
 
-$( "#ng" ).click(function() {
-  alert( "周りを見渡して、おじさんを探してみてね！" );
-});
-
 var exportWAV = function(audioData) {
   var encodeWAV = function(samples, sampleRate) {
     var buffer = new ArrayBuffer(44 + samples.length * 2);
@@ -263,6 +259,10 @@ function getMessage(cId, wmark, callback) {
 /* <-ここまでbot- */
 
 $(document).ready(function(){
+  $( "#ng" ).click(function() {
+    alert( "周りを見渡して、おじさんを探してみてね！" );
+  });
+
 
   // ** Start #1 **
   $('#start').click(function(){
