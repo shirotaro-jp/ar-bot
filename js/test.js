@@ -168,9 +168,101 @@ var handleSuccess = function(stream) {
   scriptProcessor.connect(audioContext.destination);
 };
 
+/* -ここからbot-> */
+
+var convId = '';
+var watermark = '';
+
+// conversationIdを発行する
+function getBotId() {
+  $.ajax({
+      method: "POST",
+      contentType: "application/json",
+      headers: {
+        Authorization: "Bearer RJKvjbWnqEk.cwA.fqk.DO-WBUUfjWO-MGdM5FHIXbohcrqjbKhNdMVDw3hjE1w"
+      },
+      url: "https://directline.botframework.com/v3/directline/conversations",
+      success: function(data){
+        console.log(data);
+        convId = data.conversationId; //globalに？
+        console.log("ID: "+convId);
+      }
+    });
+}
+
+// Botにメッセージを送信する
+function sendMessage(cId, msg, callback) {
+  var user = "user_" + cId; // from用のユーザー名を作成します
+
+  $.ajax({
+    method: "POST",
+    contentType: "application/json",
+    headers: {
+      Authorization: "Bearer RJKvjbWnqEk.cwA.fqk.DO-WBUUfjWO-MGdM5FHIXbohcrqjbKhNdMVDw3hjE1w"
+    },
+    url: 'https://directline.botframework.com/v3/directline/conversations/' + cId + '/activities',
+    data: JSON.stringify({
+      "type": "message",
+      "from": {
+          "id": user
+      },
+      "text": msg
+      }),
+    success: function (obj) {
+    　//console.log("メッセージを送りました！");
+      getMessage(cId, watermark, callback);
+    }
+  });
+}
+
+// Botのメッセージを受信する
+function getMessage(cId, wmark, callback) {
+  var url;
+
+  // ウォーターマークの有無により、URLの分岐
+  if (wmark != '') {
+    url = "https://directline.botframework.com/v3/directline/conversations/" + cId + "/activities?watermark=" + wmark;
+  } else {
+    url = "https://directline.botframework.com/v3/directline/conversations/" + cId + "/activities";
+  }
+
+  var messageText = '';
+  var set_interval_id = setInterval(function(){
+    if(messageText == ''){
+      $.ajax({
+        method: "GET",
+        contentType: "application/json",
+        headers: {
+          Authorization: "Bearer RJKvjbWnqEk.cwA.fqk.DO-WBUUfjWO-MGdM5FHIXbohcrqjbKhNdMVDw3hjE1w"
+        },
+        url: url,
+        success: function (data) {
+          //console.log(JSON.stringify(data));
+          watermark = data.watermark;
+          data.activities.forEach(function(val){
+            if(val.from.id == 'gs-night'){
+              messageText = val.text;
+              callback(val.text);
+            }
+          });
+        }
+      });
+    } else {
+      clearInterval(set_interval_id);
+    }
+  }, 1000);
+}
+
+/* <-ここまでbot- */
+
 $(document).ready(function(){
+
   // ** Start #1 **
   $('#start').click(function(){
+    if(convId == '') {
+      getBotId();
+    }
+
     console.log('#1');
     localMediaStream = null;
     localScriptProcessor = null;
@@ -187,39 +279,23 @@ $(document).ready(function(){
   // ** Stop #2 **
   $('#stop').click(function() {
     var wav = exportWAV(audioData);
-/*
-    var fd = new FormData();
-    fd.append('fname', 'test.wav');
-    fd.append('data', wav);
-*/
     console.log("#2", wav);
     $('#stop').hide();
 
 
-    //audioContext.colse();
     var oReq = new XMLHttpRequest();
     oReq.open("POST", 'stt', true);
     oReq.onload = function (oEvent) {
-      console.log("#3", oEvent.target.response);
-      $('#start').show();
+      var message = oEvent.target.response;
+      console.log("#3", message);
+      sendMessage(convId, message, function(retMessage){
+        console.log("#4", retMessage);
+        $('#botText').append('<p>'+retMessage+'</p>');
+        $('#start').show();
+      });
     };
 
     oReq.send(wav);
-    /*
-    // ** wav -> text #3 **
-    $.ajax({
-      type: 'POST',
-      url: 'stt',
-      dataType : "text",
-      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-      data: wav,
-      processData: false,
-      contentType: false
-    }).done(function(data){
-      console.log("#3", data);
-      $('#start').show();
-    })
-    */;
   });
 
 });
