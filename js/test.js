@@ -297,5 +297,8 @@ $(document).ready(function(){
 
     oReq.send(wav);
   });
+
+  audioContext = new AudioContext();
+
   navigator.mediaDevices.getUserMedia({ audio: true }).then(handleSuccess);
 });
