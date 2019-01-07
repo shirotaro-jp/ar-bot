@@ -267,13 +267,12 @@ $(document).ready(function(){
     localMediaStream = null;
     localScriptProcessor = null;
     audioData = []; // 録音データ
-    audioContext = undefined;
 
-    audioContext = new AudioContext();
+    audioContext.resume().then(() => {
+      $('#start').hide();
+      $('#stop').show();
+    });
 
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(handleSuccess);
-    $('#start').hide();
-    $('#stop').show();
   });
 
   // ** Stop #2 **
@@ -282,23 +281,24 @@ $(document).ready(function(){
     console.log("#2", wav);
     $('#stop').hide();
 
+   audioContext.suspend().then(() => {
+     var oReq = new XMLHttpRequest();
+     oReq.open("POST", 'stt', true);
+     oReq.onload = function (oEvent) {
+       var message = oEvent.target.response;
+       console.log("#3", message);
+       sendMessage(convId, message, function(retMessage){
+         console.log("#4", retMessage);
+         $('#botText').append('<p>'+retMessage+'</p>');
+         $('#start').show();
+       });
+     };
 
-    var oReq = new XMLHttpRequest();
-    oReq.open("POST", 'stt', true);
-    oReq.onload = function (oEvent) {
-      var message = oEvent.target.response;
-      console.log("#3", message);
-      sendMessage(convId, message, function(retMessage){
-        console.log("#4", retMessage);
-        $('#botText').append('<p>'+retMessage+'</p>');
-        $('#start').show();
-      });
-    };
-
-    oReq.send(wav);
+     oReq.send(wav);
+   });
   });
 
-  audioContext = new AudioContext();
 
+  audioContext = new AudioContext();
   navigator.mediaDevices.getUserMedia({ audio: true }).then(handleSuccess);
 });
