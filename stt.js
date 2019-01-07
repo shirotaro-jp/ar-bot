@@ -59,6 +59,6 @@ exports.stt = function(file, callback) {
 
       recognizer.close();
       recognizer = undefined;
-      callback(result);
+      callback(false);
     });
 }

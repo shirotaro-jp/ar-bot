@@ -27,10 +27,14 @@ function doRequest(req, res) {
         console.log(d.privText);
         res.writeHead(200, {'Content-Type': 'text/plain'});
         res.write(d.privText);
+      }else if(d == false){
+        console.log("error");
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write("error");
       }else{
-      console.log("失敗したよ");
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.write("失敗したよ");
+        console.log("失敗したよ");
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write("失敗したよ");
       }
       res.end();
     }
