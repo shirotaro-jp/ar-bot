@@ -62,10 +62,10 @@ function doRequest(req, res) {
       res.end();
     });
   } else {
-    fs.readFile('./'+url, 'UTF-8', function (err, data) {
-      res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end();
-    });
+    // fs.readFile('./'+url, 'UTF-8', function (err, data) {
+    //   res.writeHead(404, {'Content-Type': 'text/plain'});
+    //   res.end();
+    // });
   }
 }
 
