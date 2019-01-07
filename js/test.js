@@ -78,6 +78,10 @@ window.addEventListener('deviceorientation', function(event) {
   }
 });
 
+$( "#ng" ).click(function() {
+  alert( "周りを見渡して、おじさんを探してみてね！" );
+});
+
 var exportWAV = function(audioData) {
   var encodeWAV = function(samples, sampleRate) {
     var buffer = new ArrayBuffer(44 + samples.length * 2);
