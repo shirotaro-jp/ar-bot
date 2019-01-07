@@ -100,6 +100,12 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
+  } else if('/img/ng.png' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        res.write(data);
+        res.end();
+    });
   } else if('/bot' == url) {
   } else if('/tts' == url) {
   } else if('/js/test.js' == url) {
