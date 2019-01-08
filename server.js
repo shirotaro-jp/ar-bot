@@ -19,26 +19,25 @@ function doRequest(req, res) {
         res.end();
     });
   } else if('/stt' == url) {
-    var data = require('./stt.js');
-    function callback(d) {
-      if(d.privText != undefined){
-        console.log(d.privText);
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write(d.privText);
-      }else if(d == false){
-        console.log("error");
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write("error");
-      }else{
-        console.log("失敗したよ");
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write("失敗したよ");
-      }
-      res.end();
+    var data = require('./tts.js');
+    function callback(options, convertText) {
+      //console.log(wav);
+      res.writeHead(200, {'Content-Type': 'audio/x-wav'});
+      request(options, convertText).pipe(res).on('end', function(){
+        res.end();
+      });
     }
-    data.stt(req, callback);
-
-    
+    var body = '';
+    req.on('data', function (d) {
+      body += d;
+      if (body.length > 1e6) {
+        request.connection.destroy();
+      }
+    }).on('end', function () {
+      var post = JSON.parse(body);
+      console.log(post['data']);
+      data.tts(post['data'], callback);
+    });
   } else if('/img/icon.jpeg' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'image/jpeg'});

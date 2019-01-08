@@ -65,19 +65,18 @@ function saveAudio(accessToken, text, callback) {
     // This function makes the request to convert speech to text.
     // The speech is returned as the response.
     function convertText(error, response, body){
-      if (!error && response.statusCode == 200) {
-        console.log("Converting text-to-speech. Please hold...\n")
+        if (!error && response.statusCode == 200) {
+          console.log("Converting text-to-speech. Please hold...\n")
+        }
+        else {
+          throw new Error(error);
+        }
+        console.log("Your file is ready.\n");
       }
-      else {
-        throw new Error(error);
-      }
-      console.log("Your file is ready.\n");
-      callback(body);
-    }
-    // Pipe the response to file.
-    // request(options, convertText).pipe(fs.createWriteStream('sample.wav'));
-    request(options, convertText);
-}
+      // Pipe the response to file.
+      // request(options, convertText).pipe(fs.createWriteStream('sample.wav'));
+      callback(options, convertText);
+  }
 
 exports.tts = function(text, callback) {
   // Start the sample app.
