@@ -79,6 +79,24 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
+  } else if('/obj/Beer.obj' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/obj/Beer.mtl' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/obj/Beer_BaseColor.png' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        res.write(data);
+        res.end();
+    });
   } else if('/bot' == url) {
   } else if('/tts' == url) {
     var data = require('./tts.js');
