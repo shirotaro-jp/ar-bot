@@ -23,6 +23,10 @@ audioContext.close();
 // 位置情報取得
 var compassHeading=1;
 
+// ARオブジェクト
+var el = document.querySelector('#object');
+var gel = document.querySelector('#gift-object');
+
 window.addEventListener('deviceorientation', function(event) {
   var degtorad = Math.PI / 180; // Degree-to-Radian conversion
 
@@ -63,8 +67,6 @@ window.addEventListener('deviceorientation', function(event) {
       headingdifference = headingdifference + 360;
   }
 
-  var el = document.querySelector('#object');
-
   if(headingdifference < 60){
     if(!visible_flag) {
       $('#ng').hide();
@@ -75,6 +77,7 @@ window.addEventListener('deviceorientation', function(event) {
     if(visible_flag) {
       $('#ng').show();
       el.setAttribute('visible', false);
+      gel.setAttribute('visible', false);
       visible_flag = false;
     }
   }
@@ -289,8 +292,6 @@ $(document).ready(function(){
   $('#present').click(function(){
         
     // obujectを表示し、一定時間後に消える
-    var gel = document.querySelector('#gift-object');
-
     gel.setAttribute('visible', true);
     setTimeout(function(){
       gel.setAttribute('visible', false);
