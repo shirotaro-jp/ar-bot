@@ -5,7 +5,6 @@ const fs = require('fs');
 // Requires readline-sync to read command line inputs
 //const readline = require('readline-sync');
 
-
 /*
  * These lines will attempt to read your subscription key from an environment
  * variable. If you prefer to hardcode the subscription key for ease of use,
@@ -65,18 +64,18 @@ function saveAudio(accessToken, text, callback) {
     // This function makes the request to convert speech to text.
     // The speech is returned as the response.
     function convertText(error, response, body){
-        if (!error && response.statusCode == 200) {
-          console.log("Converting text-to-speech. Please hold...\n")
-        }
-        else {
-          throw new Error(error);
-        }
-        console.log("Your file is ready.\n");
+      if (!error && response.statusCode == 200) {
+        console.log("Converting text-to-speech. Please hold...\n")
       }
-      // Pipe the response to file.
-      // request(options, convertText).pipe(fs.createWriteStream('sample.wav'));
-      callback(options, convertText);
-  }
+      else {
+        throw new Error(error);
+      }
+      console.log("Your file is ready.\n");
+    }
+    // Pipe the response to file.
+    // request(options, convertText).pipe(fs.createWriteStream('sample.wav'));
+    callback(options, convertText);
+}
 
 exports.tts = function(text, callback) {
   // Start the sample app.

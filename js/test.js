@@ -78,7 +78,7 @@ window.addEventListener('deviceorientation', function(event) {
       visible_flag = false;
     }
   }
-  });
+});
 
 var exportWAV = function(audioData) {
   var encodeWAV = function(samples, sampleRate) {
@@ -279,41 +279,25 @@ function string_to_buffer(src) {
 /* <-ここまでbot- */
 
 $(document).ready(function(){
+  if(convId == '') {
+    getBotId();
+  }
 
-  // マイク使用不可時
   $( "#ng" ).click(function() {
     alert( "周りを見渡して、おじさんを探してみてね！" );
   });
 
-  // ギフトボタンクリック
-  $('#present').click(function(){
-        
-    // obujectを表示し、一定時間後に消える
-    var gel = document.querySelector('#gift-object');
-
-    gel.setAttribute('visible', true);
-    setTimeout(function(){
-      gel.setAttribute('visible', false);
-    },3000);  
-    
-  });
 
   // ** Start #1 **
   $('#start').click(function(){
-    if(convId == '') {
-      getBotId();
-    }
-
     console.log('#1');
 
     audioData = []; // 録音データ
     console.log('state: '+audioContext.state);
 
-//    audioContext.resume().then(() => {
-      recordingFlg = true;
-      $('#start').hide();
-      $('#stop').show();
-//    });
+    recordingFlg = true;
+    $('#start').hide();
+    $('#stop').show();
 
   });
 
@@ -321,50 +305,48 @@ $(document).ready(function(){
   $('#stop').click(function() {
     $('#stop').hide();
 
-  //  audioContext.suspend().then(() => {
-      recordingFlg = false;
+    recordingFlg = false;
 
-      var wav = exportWAV(audioData);
-      console.log("#2", wav);
+    var wav = exportWAV(audioData);
+    console.log("#2", wav);
 
-      var oReq = new XMLHttpRequest();
-      oReq.open("POST", 'stt', true);
-      oReq.onload = function (oEvent) {
-        var message = oEvent.target.response;
-        console.log("#3", message);
-        sendMessage(convId, message, function(retMessage){
-          console.log("#4", retMessage);
-          $('#botText').append('<p>'+retMessage+'</p>');
+    var oReq = new XMLHttpRequest();
+    oReq.open("POST", 'stt', true);
+    oReq.onload = function (oEvent) {
+      var message = oEvent.target.response;
+      console.log("#3", message);
+      sendMessage(convId, message, function(retMessage){
+        console.log("#4", retMessage);
+        $('#botText').append('<p>'+retMessage+'</p>');
 
-          var req = new XMLHttpRequest();
-          req.open("POST", '/tts', true);
-          req.responseType = "arraybuffer";
-          req.setRequestHeader("Content-Type", "application/json");
-          req.onreadystatechange = function (oEvent) { // 状態が変化すると関数が呼び出されます。
-            if (req.readyState === 4) {
-              if (req.status === 0 || req.status === 200) {
-                var resWav = req.response;
-                console.log('#5', resWav);
-                // サウンドを読み込む
+        var req = new XMLHttpRequest();
+        req.open("POST", '/tts', true);
+        req.responseType = "arraybuffer";
+        req.setRequestHeader("Content-Type", "application/json");
+        req.onreadystatechange = function (oEvent) { // 状態が変化すると関数が呼び出されます。
+          if (req.readyState === 4) {
+            if (req.status === 0 || req.status === 200) {
+              var resWav = req.response;
+              console.log('#5', resWav);
+              // サウンドを読み込む
 
-                audioContext.decodeAudioData(resWav, function(buffer) {
-                  console.log('play');
-                  // コールバックを実行
-                  playSound(buffer);
-                });
+              audioContext.decodeAudioData(resWav, function(buffer) {
+                console.log('play');
+                // コールバックを実行
+                playSound(buffer);
+              });
 
-                $('#start').show();
-              }
+              $('#start').show();
             }
           }
-          req.send(JSON.stringify({"data": retMessage}));
-        });
-      };
+        }
+        req.send(JSON.stringify({"data": retMessage}));
+      });
+    };
 
-      oReq.send(wav);
-//    });
+    oReq.send(wav);
   });
 
   audioContext = new AudioContext();
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(handleSuccess);
+  navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess);
 });
