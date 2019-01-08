@@ -283,10 +283,21 @@ $(document).ready(function(){
     getBotId();
   }
 
+  
   $( "#ng" ).click(function() {
     alert( "周りを見渡して、おじさんを探してみてね！" );
   });
 
+  // ギフトボタンクリック時
+  $( "#present" ).click(function() {
+    
+    var gel = document.querySelector('#gift-object');
+    gel.setAttribute('visible', true);
+    setTimeout(function(){
+      gel.setAttribute('visible', false);
+    },3000);
+  
+  });
 
   // ** Start #1 **
   $('#start').click(function(){
