@@ -78,7 +78,7 @@ window.addEventListener('deviceorientation', function(event) {
       visible_flag = false;
     }
   }
-});
+  });
 
 var exportWAV = function(audioData) {
   var encodeWAV = function(samples, sampleRate) {
@@ -279,10 +279,30 @@ function string_to_buffer(src) {
 /* <-ここまでbot- */
 
 $(document).ready(function(){
+
+  // マイク使用不可時
   $( "#ng" ).click(function() {
     alert( "周りを見渡して、おじさんを探してみてね！" );
   });
 
+  // ギフトボタンクリック
+  $('#present').on('click',function(){
+        
+    // obujectを表示し、一定時間後に消える
+    var gel = document.querySelector('#gift-object');
+
+    if(headingdifference < 60){
+      if(visible_flag) {
+        gel.setAttribute('visible', true);
+      }
+    }else{
+      if(!visible_flag) {
+        gel.setAttribute('visible', false);
+        alert( "周りを見渡して、おじさんを探してみてね！" );
+      }
+    }
+    
+  });
 
   // ** Start #1 **
   $('#start').click(function(){
