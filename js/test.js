@@ -286,21 +286,15 @@ $(document).ready(function(){
   });
 
   // ギフトボタンクリック
-  $('#present').on('click',function(){
+  $('#present').click(function(){
         
     // obujectを表示し、一定時間後に消える
     var gel = document.querySelector('#gift-object');
 
-    if(headingdifference < 60){
-      if(visible_flag) {
-        gel.setAttribute('visible', true);
-      }
-    }else{
-      if(!visible_flag) {
-        gel.setAttribute('visible', false);
-        alert( "周りを見渡して、おじさんを探してみてね！" );
-      }
-    }
+    gel.setAttribute('visible', true);
+    setTimeout(function(){
+      gel.setAttribute('visible', false);
+    },3000);  
     
   });
 
