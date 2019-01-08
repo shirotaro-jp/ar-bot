@@ -32,7 +32,7 @@ function doRequest(req, res) {
       } else {
         console.log('失敗したよ');
         res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write('失敗したよ');
+        res.write('なんだって？');
       }
       res.end();
     }

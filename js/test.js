@@ -290,7 +290,7 @@ $(document).ready(function(){
 
   // ギフトボタンクリック時
   $( "#present" ).click(function() {
-    
+
     var gel = document.querySelector('#gift-object');
     gel.setAttribute('visible', true);
     setTimeout(function(){
