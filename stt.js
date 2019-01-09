@@ -10,32 +10,31 @@ var fs = require("fs");
 // through the speech recognizer.
 var subscriptionKey = "586252c420c649ff8ef5bf5cf7b8eab8";
 var serviceRegion = "eastasia"; // e.g., "westus"
-var filename = "test.wav"; // 16000 Hz, Mono
+// var filename = "test.wav"; // 16000 Hz, Mono
 
 exports.stt = function(file, callback) {
-  console.time('処理時間：');
   // create the push stream we need for the speech sdk.
   var pushStream = sdk.AudioInputStream.createPushStream();
 
-/*
+
   // open the file and push it to the push stream.
   file.on('data', function(arrayBuffer) {
     pushStream.write(arrayBuffer.buffer);
   }).on('end', function() {
     pushStream.close();
   });
-*/
+
 
 // ここでもう一度ファイルの読み込み直しができれば良さそう
 // delete require.cache[require.resolve('./test.wav')] //追加1/9
 
 
-var file = fs.createReadStream(filename);
-file.on('data', function(arrayBuffer) {
-  pushStream.write(arrayBuffer.buffer);
-}).on('end', function() {
-  pushStream.close();
-});
+// var file = fs.createReadStream(filename);
+// file.on('data', function(arrayBuffer) {
+//   pushStream.write(arrayBuffer.buffer);
+// }).on('end', function() {
+//   pushStream.close();
+// });
 
   /*
   pushStream.write(file);
@@ -64,7 +63,6 @@ file.on('data', function(arrayBuffer) {
 
       recognizer.close();
       recognizer = undefined;
-      console.timeEnd('処理時間：');
       callback(result);
     },
     function (err) {
@@ -72,7 +70,6 @@ file.on('data', function(arrayBuffer) {
 
       recognizer.close();
       recognizer = undefined;
-      console.timeEnd('処理時間：');
       callback(false);
     });
 }
