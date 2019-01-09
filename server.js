@@ -1,5 +1,6 @@
 const http = require('http');
-const port = 80;
+// const port = 80; //lolipop
+var port = process.env.PORT || 1337; //Azure
 
 var server = http.createServer();
 server.on('request', doRequest);
@@ -147,6 +148,6 @@ function doRequest(req, res) {
   }
 }
 
-// server.listen(port);
-server.listen(3000, "127.0.0.1");
+server.listen(port);
+// server.listen(3000, "127.0.0.1");
 
