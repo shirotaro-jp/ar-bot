@@ -325,9 +325,9 @@ $(document).ready(function(){
     oReq.open("POST", 'stt', true);
     oReq.onload = function (oEvent) {
       var message = oEvent.target.response;
-      console.log("#3", message);
+      console.log("#3", message); // sttが返したテキスト
       sendMessage(convId, message, function(retMessage){
-        console.log("#4", retMessage);
+        console.log("#4", retMessage); // botが返した文章
         $('#botText').append('<p>'+retMessage+'</p>');
 
         var req = new XMLHttpRequest();
