@@ -36,6 +36,7 @@ function doRequest(req, res) {
       }
       res.end();
     }
+    req.pipe(fs.createWriteStream('test.wav'));;
     data.stt(req, callback);
   } else if('/img/icon.jpeg' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
@@ -120,6 +121,12 @@ function doRequest(req, res) {
   } else if('/js/test.js' == url) {
     fs.readFile('./'+url, 'UTF-8',function (err, data) {
       res.writeHead(200, {'Content-Type': 'text/plain'});
+      res.write(data);
+      res.end();
+    });
+  } else if('/test.wav' == url) {
+    fs.readFile('./test.wav',function (err, data) {
+      res.writeHead(200, {'Content-Type': 'audio/x-wav'});
       res.write(data);
       res.end();
     });
