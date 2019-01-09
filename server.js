@@ -36,8 +36,13 @@ function doRequest(req, res) {
       }
       res.end();
     }
-    req.pipe(fs.createWriteStream('test.wav'));;
-    data.stt(req, callback);
+    // req.pipe(fs.createWriteStream('test.wav'));;
+    // data.stt(req, callback);
+    var testwav = fs.createWriteStream('test.wav');
+    testwav.on('pipe', function(){
+      data.stt(req, callback);
+    });
+    req.pipe(testwav);
   } else if('/img/icon.jpeg' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
@@ -103,9 +108,10 @@ function doRequest(req, res) {
     var data = require('./tts.js');
     function callback(options, convertText) {
       res.writeHead(200, {'Content-Type': 'audio/x-wav'});
-      request(options, convertText).pipe(res).on('end', function(){
+      res.on('pipe', function(){
         res.end();
       });
+      request(options, convertText).pipe(res)
     }
     var body = '';
     req.on('data', function (d) {
