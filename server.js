@@ -108,7 +108,7 @@ function doRequest(req, res) {
     var data = require('./tts.js');
     function callback(options, convertText) {
       res.writeHead(200, {'Content-Type': 'audio/x-wav'});
-      res.on('pipe', function(){
+      res.on('end', function(){
         res.end();
       });
       request(options, convertText).pipe(res)
