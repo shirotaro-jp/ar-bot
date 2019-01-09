@@ -13,6 +13,7 @@ var serviceRegion = "eastasia"; // e.g., "westus"
 var filename = "test.wav"; // 16000 Hz, Mono
 
 exports.stt = function(file, callback) {
+  console.time('処理時間：');
   // create the push stream we need for the speech sdk.
   var pushStream = sdk.AudioInputStream.createPushStream();
 
@@ -26,7 +27,8 @@ exports.stt = function(file, callback) {
 */
 
 // ここでもう一度ファイルの読み込み直しができれば良さそう
-delete require.cache[require.resolve('./test.wav')] //追加1/9重冨
+// delete require.cache[require.resolve('./test.wav')] //追加1/9
+
 
 var file = fs.createReadStream(filename);
 file.on('data', function(arrayBuffer) {
@@ -62,7 +64,7 @@ file.on('data', function(arrayBuffer) {
 
       recognizer.close();
       recognizer = undefined;
-
+      console.timeEnd('処理時間：');
       callback(result);
     },
     function (err) {
@@ -70,6 +72,7 @@ file.on('data', function(arrayBuffer) {
 
       recognizer.close();
       recognizer = undefined;
+      console.timeEnd('処理時間：');
       callback(false);
     });
 }
