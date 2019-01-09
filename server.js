@@ -36,13 +36,13 @@ function doRequest(req, res) {
       }
       res.end();
     }
-    // req.pipe(fs.createWriteStream('test.wav'));;
-    // data.stt(req, callback);
-    var testwav = fs.createWriteStream('test.wav');
-    testwav.on('pipe', function(){
-      data.stt(req, callback);
-    });
-    req.pipe(testwav);
+    data.stt(req, callback);
+    
+    // var testwav = fs.createWriteStream('test.wav');
+    // testwav.on('pipe', function(){
+    //   data.stt(req, callback);
+    // });
+    // req.pipe(testwav);
   } else if('/img/icon.jpeg' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
@@ -130,15 +130,15 @@ function doRequest(req, res) {
       res.write(data);
       res.end();
     });
-  } else if('/test.wav' == url) {
-    fs.readFile('./test.wav',function (err, data) {
-      res.writeHead(200, {
-        'Content-Type': 'audio/wav',
-        'Cache-Control': "no-cache"
-      });
-      res.write(data);
-      res.end();
-    });
+  // } else if('/test.wav' == url) {
+  //   fs.readFile('./test.wav',function (err, data) {
+  //     res.writeHead(200, {
+  //       'Content-Type': 'audio/wav',
+  //       'Cache-Control': "no-cache"
+  //     });
+  //     res.write(data);
+  //     res.end();
+  //   });
   } else {
     fs.readFile('./'+url, 'UTF-8', function (err, data) {
       res.writeHead(404, {'Content-Type': 'text/plain'});
