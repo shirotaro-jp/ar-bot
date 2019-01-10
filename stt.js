@@ -51,6 +51,7 @@ exports.stt = function(file, callback) {
   var speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
 
   // setting the recognition language to English.
+  // speechConfig.speechRecognitionLanguage = "en-US";
   speechConfig.speechRecognitionLanguage = "ja-JP";
 
   // create the speech recognizer.

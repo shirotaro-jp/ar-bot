@@ -1,6 +1,6 @@
 const http = require('http');
-// const port = 80; //lolipop
-var port = process.env.PORT || 1337; //Azure
+const port = 80; //lolipop
+// var port = process.env.PORT || 1337; //Azure
 
 var server = http.createServer();
 server.on('request', doRequest);

@@ -184,7 +184,7 @@ function getBotId() {
       method: "POST",
       contentType: "application/json",
       headers: {
-        Authorization: "Bearer RJKvjbWnqEk.cwA.fqk.DO-WBUUfjWO-MGdM5FHIXbohcrqjbKhNdMVDw3hjE1w"
+        Authorization: "Bearer 63wSAKFA9Gk.cwA.TGU.VLwmbXPVpEVJk7QutSebgJFyrhSqAMCnLFEm-WcypF0"
       },
       url: "https://directline.botframework.com/v3/directline/conversations",
       success: function(data){
@@ -203,7 +203,7 @@ function sendMessage(cId, msg, callback) {
     method: "POST",
     contentType: "application/json",
     headers: {
-      Authorization: "Bearer RJKvjbWnqEk.cwA.fqk.DO-WBUUfjWO-MGdM5FHIXbohcrqjbKhNdMVDw3hjE1w"
+      Authorization: "Bearer 63wSAKFA9Gk.cwA.TGU.VLwmbXPVpEVJk7QutSebgJFyrhSqAMCnLFEm-WcypF0"
     },
     url: 'https://directline.botframework.com/v3/directline/conversations/' + cId + '/activities',
     data: JSON.stringify({
@@ -238,14 +238,14 @@ function getMessage(cId, wmark, callback) {
         method: "GET",
         contentType: "application/json",
         headers: {
-          Authorization: "Bearer RJKvjbWnqEk.cwA.fqk.DO-WBUUfjWO-MGdM5FHIXbohcrqjbKhNdMVDw3hjE1w"
+          Authorization: "Bearer 63wSAKFA9Gk.cwA.TGU.VLwmbXPVpEVJk7QutSebgJFyrhSqAMCnLFEm-WcypF0"
         },
         url: url,
         success: function (data) {
           //console.log(JSON.stringify(data));
           watermark = data.watermark;
           data.activities.forEach(function(val){
-            if(val.from.id == 'gs-night'){
+            if(val.from.id == 'arbot-forgga'){
               messageText = val.text;
               callback(val.text);
             }
