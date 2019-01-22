@@ -321,6 +321,7 @@ $(document).ready(function(){
     var wav = exportWAV(audioData);
     console.log("#2", wav);
 
+    /*
     var req = new XMLHttpRequest();
     req.open("POST", '/testest', true);
     req.responseType = "arraybuffer";
@@ -343,10 +344,13 @@ $(document).ready(function(){
       }
     }
     req.send(wav);
+*/
 
-    /*
+    
     var oReq = new XMLHttpRequest();
     oReq.open("POST", '/stt', true);
+    oReq.responseType = "text/plain";
+    oReq.setRequestHeader("Content-Type", "audio/wav");
     oReq.onload = function (oEvent) {
       var message = oEvent.target.response;
       console.log("#3", message); // sttが返したテキスト
@@ -380,7 +384,6 @@ $(document).ready(function(){
     };
 
     oReq.send(wav);
-    */
   });
 
   audioContext = new AudioContext();
