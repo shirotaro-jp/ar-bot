@@ -20,7 +20,16 @@
     </a-assets>
 
     <!-- <a-sphere position="0 -2 -15" radius="1.25" color="#EF2D5E" id="object"></a-sphere> -->
-    <a-obj-model src="#man-obj" mtl="#man-mtl" position="0 -2 -10" id="object"></a-obj-model>
+    <a-obj-model src="#man-obj" mtl="#man-mtl" position="0 0 -5" rotation="0 -180 0" id="object">
+      <a-animation 
+      attribute="rotation" 
+      easing="linear" 
+      dur="10000" 
+      to="0 180 0" 
+      repeat="indefinite"> 
+      </a-animation>
+      <a-obj-model src="#crate-obj" mtl="#crate-mtl" rotation="0 90 0" position="0 -1.2 0"></a-obj-model>
+    </a-obj-model>
     <a-obj-model src="#crate-obj" mtl="#crate-mtl" position="-2 -2.3 -15" visible="false" id="gift-object"></a-obj-model>
     <a-entity camera></a-entity>
 

@@ -3,6 +3,7 @@
 // pull in the required packages.
 var sdk = require("microsoft-cognitiveservices-speech-sdk");
 var fs = require("fs");
+var stream = require("stream");
 
 // replace with your own subscription key,
 // service region (e.g., "westus"), and
@@ -16,26 +17,14 @@ exports.stt = function(file, callback) {
   // create the push stream we need for the speech sdk.
   var pushStream = sdk.AudioInputStream.createPushStream();
 
-  //var stream = require('stream');
-
-  // Initiate the source
-  //var bufferStream = new stream.PassThrough();
-  
-  // Write your buffer
-  //bufferStream.end(file);
-  
-
+  var passthrough = new stream.PassThrough();
+  file.pipe(passthrough);
 
 // fs.createReadStream(filename).on('data', function(arrayBuffer) {
 //   pushStream.write(arrayBuffer.buffer);
 // }).on('end', function() {
 //   pushStream.close();
 // });
-
-  /*
-  pushStream.write(file);
-  pushStream.close();
-  */
 
   // we are done with the setup
   //console.log("Now recognizing from: " + filename);
@@ -73,11 +62,10 @@ exports.stt = function(file, callback) {
   }
 
   // open the file and push it to the push stream.
-  file.on('data', function(arrayBuffer) {
+  passthrough.on('data', function(arrayBuffer) {
     pushStream.write(arrayBuffer.buffer);
   }).on('end', function() {
     pushStream.close();
     sttPost(pushStream);
   });
-
 }

@@ -47,8 +47,9 @@ function doRequest(req, res) {
       }
       res.end();
     }
+
     data.stt(req, callback);
-    
+
     // var testwav = fs.createWriteStream('test.wav');
     // testwav.on('pipe', function(){
     //   data.stt(req, callback);
@@ -170,6 +171,5 @@ function doRequest(req, res) {
   }
 }
 
-server.listen(port);
-// server.listen(3000, "127.0.0.1");
-
+// server.listen(port);
+server.listen(3000, "127.0.0.1");
