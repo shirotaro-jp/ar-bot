@@ -39,7 +39,11 @@ function doRequest(req, res) {
       } else {
         console.log('失敗したよ');
         res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write('error '+d);
+        var retText = '';
+        Object.keys(d).forEach(function(key){
+          retText += key +': '+ this[key] + ';';
+        }, d);
+        res.write('error '+retText);
       }
       res.end();
     }
