@@ -29,12 +29,12 @@ exports.stt = function(file, callback) {
 // delete require.cache[require.resolve('./test.wav')] //追加1/9
 
 
-var file = fs.createReadStream(filename);
-file.on('data', function(arrayBuffer) {
-  pushStream.write(arrayBuffer.buffer);
-}).on('end', function() {
-  pushStream.close();
-});
+// var file = fs.createReadStream(filename);
+// file.on('data', function(arrayBuffer) {
+//   pushStream.write(arrayBuffer.buffer);
+// }).on('end', function() {
+//   pushStream.close();
+// });
 
   /*
   pushStream.write(file);
