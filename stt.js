@@ -39,12 +39,12 @@ exports.stt = function(file, callback) {
 
   // we are done with the setup
   //console.log("Now recognizing from: " + filename);
-  function sttPost(pushStream) {
+  function sttPost(testPushStream) {
     console.log("ここまでok");
 
     // now create the audio-config pointing to our stream and
     // the speech config specifying the language.
-    var audioConfig = sdk.AudioConfig.fromStreamInput(pushStream);
+    var audioConfig = sdk.AudioConfig.fromStreamInput(testPushStream);
     var speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
 
     // setting the recognition language to English.
