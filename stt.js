@@ -16,13 +16,15 @@ exports.stt = function(file, callback) {
   // create the push stream we need for the speech sdk.
   var pushStream = sdk.AudioInputStream.createPushStream();
 
+  //var stream = require('stream');
 
-  // open the file and push it to the push stream.
-  file.on('data', function(arrayBuffer) {
-    pushStream.write(arrayBuffer.buffer);
-  }).on('end', function() {
-    pushStream.close();
-  });
+  // Initiate the source
+  //var bufferStream = new stream.PassThrough();
+  
+  // Write your buffer
+  //bufferStream.end(file);
+  
+
 
 // fs.createReadStream(filename).on('data', function(arrayBuffer) {
 //   pushStream.write(arrayBuffer.buffer);
@@ -37,34 +39,45 @@ exports.stt = function(file, callback) {
 
   // we are done with the setup
   //console.log("Now recognizing from: " + filename);
-  console.log("ここまでok");
+  function sttPost(pushStream) {
+    console.log("ここまでok");
 
-  // now create the audio-config pointing to our stream and
-  // the speech config specifying the language.
-  var audioConfig = sdk.AudioConfig.fromStreamInput(pushStream);
-  var speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
+    // now create the audio-config pointing to our stream and
+    // the speech config specifying the language.
+    var audioConfig = sdk.AudioConfig.fromStreamInput(pushStream);
+    var speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
 
-  // setting the recognition language to English.
-  speechConfig.speechRecognitionLanguage = "ja-JP";
+    // setting the recognition language to English.
+    speechConfig.speechRecognitionLanguage = "ja-JP";
 
-  // create the speech recognizer.
-  var recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+    // create the speech recognizer.
+    var recognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
-  // start the recognizer and wait for a result.
-  recognizer.recognizeOnceAsync(
-    function (result) {
-      console.log(result);
+    // start the recognizer and wait for a result.
+    recognizer.recognizeOnceAsync(
+      function (result) {
+        console.log(result);
 
-      recognizer.close();
-      recognizer = undefined;
+        recognizer.close();
+        recognizer = undefined;
 
-      callback(result);
-    },
-    function (err) {
-      console.log("err - ");
+        callback(result);
+      },
+      function (err) {
+        console.log("err - ");
 
-      recognizer.close();
-      recognizer = undefined;
-      callback(false);
-    });
+        recognizer.close();
+        recognizer = undefined;
+        callback(false);
+      });
+  }
+
+  // open the file and push it to the push stream.
+  file.on('data', function(arrayBuffer) {
+    pushStream.write(arrayBuffer.buffer);
+  }).on('end', function() {
+    pushStream.close();
+    sttPost(pushStream);
+  });
+
 }
