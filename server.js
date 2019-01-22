@@ -86,6 +86,18 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
+  } else if('/obj/model.obj' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/obj/materials.mtl' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.write(data);
+        res.end();
+    });
   } else if('/obj/Beer.obj' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'text/plain'});
