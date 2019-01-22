@@ -350,7 +350,7 @@ $(document).ready(function(){
     var oReq = new XMLHttpRequest();
     oReq.open("POST", '/stt', true);
     oReq.responseType = "text/plain";
-    oReq.setRequestHeader("Content-Type", "audio/wav");
+    oReq.setRequestHeader("Content-Type", "application/octet-stream");
     oReq.onload = function (oEvent) {
       var message = oEvent.target.response;
       console.log("#3", message); // sttが返したテキスト
