@@ -322,7 +322,7 @@ $(document).ready(function(){
     console.log("#2", wav);
 
     var oReq = new XMLHttpRequest();
-    oReq.open("POST", 'stt', true);
+    oReq.open("POST", '/stt', true);
     oReq.onload = function (oEvent) {
       var message = oEvent.target.response;
       console.log("#3", message); // sttが返したテキスト

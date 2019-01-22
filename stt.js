@@ -24,13 +24,7 @@ exports.stt = function(file, callback) {
     pushStream.close();
   });
 
-
-// ここでもう一度ファイルの読み込み直しができれば良さそう
-// delete require.cache[require.resolve('./test.wav')] //追加1/9
-
-
-// var file = fs.createReadStream(filename);
-// file.on('data', function(arrayBuffer) {
+// fs.createReadStream(filename).on('data', function(arrayBuffer) {
 //   pushStream.write(arrayBuffer.buffer);
 // }).on('end', function() {
 //   pushStream.close();
@@ -51,7 +45,6 @@ exports.stt = function(file, callback) {
   var speechConfig = sdk.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
 
   // setting the recognition language to English.
-  // speechConfig.speechRecognitionLanguage = "en-US";
   speechConfig.speechRecognitionLanguage = "ja-JP";
 
   // create the speech recognizer.
@@ -64,6 +57,7 @@ exports.stt = function(file, callback) {
 
       recognizer.close();
       recognizer = undefined;
+
       callback(result);
     },
     function (err) {
