@@ -19,7 +19,13 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
-  } else if('/stt' == url) {
+  } else if('/testest' == url) {
+    res.writeHead(200, {'Content-Type': 'audio/x-wav'});
+    res.on('end', function(){
+      res.end();
+    });
+    req.pipe(res);
+} else if('/stt' == url) {
     var data = require('./stt.js');
     function callback(d) {
       if(d.privText != undefined) {
@@ -160,6 +166,6 @@ function doRequest(req, res) {
   }
 }
 
-server.listen(port);
-// server.listen(3000, "127.0.0.1");
+// server.listen(port);
+server.listen(3000, "127.0.0.1");
 

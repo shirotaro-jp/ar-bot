@@ -321,6 +321,30 @@ $(document).ready(function(){
     var wav = exportWAV(audioData);
     console.log("#2", wav);
 
+    var req = new XMLHttpRequest();
+    req.open("POST", '/testest', true);
+    req.responseType = "arraybuffer";
+    req.setRequestHeader("Content-Type", "audio/wav");
+    req.onreadystatechange = function (oEvent) { // 状態が変化すると関数が呼び出されます。
+      if (req.readyState === 4) {
+        if (req.status === 0 || req.status === 200) {
+          var resWav = req.response;
+          console.log('#5', resWav);
+          // サウンドを読み込む
+
+          audioContext.decodeAudioData(resWav, function(buffer) {
+            console.log('play');
+            // コールバックを実行
+            playSound(buffer);
+          });
+
+          $('#start').show();
+        }
+      }
+    }
+    req.send(wav);
+
+    /*
     var oReq = new XMLHttpRequest();
     oReq.open("POST", '/stt', true);
     oReq.onload = function (oEvent) {
@@ -356,6 +380,7 @@ $(document).ready(function(){
     };
 
     oReq.send(wav);
+    */
   });
 
   audioContext = new AudioContext();
