@@ -1,3 +1,9 @@
+var subscriptionKey = "ef0ab675de284c428c60c0fe80ac3849";
+var serviceRegion = "eastasia";
+var authorizationToken;
+var SpeechSDK;
+var recognizer;
+
 // 時間取得
 var nowtime = new Date();
 var hour = nowtime.getHours();
@@ -133,10 +139,11 @@ var exportWAV = function(audioData) {
   };
 
   var dataview = encodeWAV(mergeBuffers(audioData), audioContext.sampleRate);
+  return dataview;
+
+  /*
   var audioBlob = new Blob([dataview], { type: 'audio/wav' });
 
-  return audioBlob;
-  /*
   var myURL = window.URL || window.webkitURL;
   var url = myURL.createObjectURL(audioBlob);
 
@@ -278,12 +285,48 @@ function string_to_buffer(src) {
 
 /* <-ここまでbot- */
 
+var ttsStart = function(retMessage){
+  console.log("#4", retMessage); // botが返した文章
+  $('#botText').append('<p>'+retMessage+'</p>');
+
+  var req = new XMLHttpRequest();
+  req.open("POST", '/tts', true);
+  req.responseType = "arraybuffer";
+  req.setRequestHeader("Content-Type", "application/json");
+  req.onreadystatechange = function (oEvent) { // 状態が変化すると関数が呼び出されます。
+    if (req.readyState === 4) {
+      if (req.status === 0 || req.status === 200) {
+        var resWav = req.response;
+        console.log('#5', resWav);
+        // サウンドを読み込む
+
+        audioContext.decodeAudioData(resWav, function(buffer) {
+          console.log('play');
+          // コールバックを実行
+          playSound(buffer);
+        });
+
+        $('#start').show();
+      }
+    }
+  }
+  req.send(JSON.stringify({"data": retMessage}));
+}
+
 $(document).ready(function(){
   if(convId == '') {
     getBotId();
   }
 
-  
+  if (!!window.SpeechSDK) {
+    SpeechSDK = window.SpeechSDK;
+
+    // in case we have a function for getting an authorization token, call it.
+    if (typeof RequestAuthorizationToken === "function") {
+        RequestAuthorizationToken();
+    }
+  }
+
   $( "#ng" ).click(function() {
     alert( "周りを見渡して、おじさんを探してみてね！" );
   });
@@ -296,7 +339,7 @@ $(document).ready(function(){
     setTimeout(function(){
       gel.setAttribute('visible', false);
     },3000);
-  
+
   });
 
   // ** Start #1 **
@@ -309,7 +352,6 @@ $(document).ready(function(){
     recordingFlg = true;
     $('#start').hide();
     $('#stop').show();
-
   });
 
   // ** Stop #2 **
@@ -321,32 +363,48 @@ $(document).ready(function(){
     var wav = exportWAV(audioData);
     console.log("#2", wav);
 
-    /*
-    var req = new XMLHttpRequest();
-    req.open("POST", '/testest', true);
-    req.responseType = "arraybuffer";
-    req.setRequestHeader("Content-Type", "audio/wav");
-    req.onreadystatechange = function (oEvent) { // 状態が変化すると関数が呼び出されます。
-      if (req.readyState === 4) {
-        if (req.status === 0 || req.status === 200) {
-          var resWav = req.response;
-          console.log('#5', resWav);
-          // サウンドを読み込む
-
-          audioContext.decodeAudioData(resWav, function(buffer) {
-            console.log('play');
-            // コールバックを実行
-            playSound(buffer);
-          });
-
-          $('#start').show();
-        }
-      }
+    var speechConfig;
+    if (authorizationToken) {
+      speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(authorizationToken, serviceRegion);
+    } else {
+      speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, serviceRegion);
     }
-    req.send(wav);
-*/
 
-    
+    var pushStream = SpeechSDK.AudioInputStream.createPushStream();
+    pushStream.write(wav.buffer);
+    pushStream.close();
+
+    speechConfig.speechRecognitionLanguage = "ja-JP";
+    var audioConfig = SpeechSDK.AudioConfig.fromStreamInput(pushStream);
+
+    recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+
+    console.log('Go!');
+    recognizer.recognizeOnceAsync(
+      function (result) {
+        $('#start').show();
+        var message = result.text;
+        window.console.log(result);
+
+        recognizer.close();
+        recognizer = undefined;
+
+        console.log("#3", message); // sttが返したテキスト
+        sendMessage(convId, message, ttsStart);
+
+      },
+      function (err) {
+        $('#start').show();
+        var message = '失敗したよ';
+        window.console.log(err);
+
+        recognizer.close();
+        recognizer = undefined;
+
+        console.log("#3", message); // sttが返したテキスト
+        sendMessage(convId, message, ttsStart);
+      });
+/*
     var oReq = new XMLHttpRequest();
     oReq.open("POST", '/stt', true);
     oReq.responseType = "text/plain";
@@ -384,8 +442,8 @@ $(document).ready(function(){
     };
 
     oReq.send(wav);
+    */
   });
-
   audioContext = new AudioContext();
   navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess);
 });

@@ -19,43 +19,45 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
-  } else if('/testest' == url) {
-    res.writeHead(200, {'Content-Type': 'audio/x-wav'});
-    res.on('end', function(){
-      res.end();
-    });
-    req.pipe(res);
-} else if('/stt' == url) {
-    var data = require('./stt.js');
-    function callback(d) {
-      if(d.privText != undefined) {
-        console.log(d.privText);
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write(d.privText);
-      } else if(d == false) {
-        console.log('error');
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.write('error');
-      } else {
-        console.log('失敗したよ');
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        var retText = '失敗したよ';
-        // Object.keys(d).forEach(function(key){
-        //   retText += key +': '+ this[key] + ';';
-        // }, d);
-        res.write('error '+retText);
-      }
-      res.end();
-    }
+  }
+//    else if('/testest' == url) {
+//     res.writeHead(200, {'Content-Type': 'audio/x-wav'});
+//     res.on('end', function(){
+//       res.end();
+//     });
+//     req.pipe(res);
+// } else if('/stt' == url) {
+//     var data = require('./stt.js');
+//     function callback(d) {
+//       if(d.privText != undefined) {
+//         console.log(d.privText);
+//         res.writeHead(200, {'Content-Type': 'text/plain'});
+//         res.write(d.privText);
+//       } else if(d == false) {
+//         console.log('error');
+//         res.writeHead(200, {'Content-Type': 'text/plain'});
+//         res.write('error');
+//       } else {
+//         console.log('失敗したよ');
+//         res.writeHead(200, {'Content-Type': 'text/plain'});
+//         var retText = '失敗したよ';
+//         // Object.keys(d).forEach(function(key){
+//         //   retText += key +': '+ this[key] + ';';
+//         // }, d);
+//         res.write('error '+retText);
+//       }
+//       res.end();
+//     }
 
-    data.stt(req, callback);
+//     data.stt(req, callback);
 
-    // var testwav = fs.createWriteStream('test.wav');
-    // testwav.on('pipe', function(){
-    //   data.stt(req, callback);
-    // });
-    // req.pipe(testwav);
-  } else if('/img/icon.jpeg' == url) {
+//     // var testwav = fs.createWriteStream('test.wav');
+//     // testwav.on('pipe', function(){
+//     //   data.stt(req, callback);
+//     // });
+//     // req.pipe(testwav);
+//   } 
+  else if('/img/icon.jpeg' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
         res.write(data);
@@ -163,6 +165,12 @@ function doRequest(req, res) {
   //     res.write(data);
   //     res.end();
   //   });
+} else if('/js/microsoft.cognitiveservices.speech.sdk.bundle-min.js' == url) {
+    fs.readFile('./js/microsoft.cognitiveservices.speech.sdk.bundle-min.js', 'UTF-8',function (err, data) {
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      res.write(data);
+      res.end();
+    });
   } else {
     fs.readFile('./'+url, 'UTF-8', function (err, data) {
       res.writeHead(404, {'Content-Type': 'text/plain'});
@@ -171,5 +179,6 @@ function doRequest(req, res) {
   }
 }
 
-server.listen(port);
-// server.listen(3000, "127.0.0.1");
+// server.listen(port);
+server.listen(3000, "127.0.0.1");
+
