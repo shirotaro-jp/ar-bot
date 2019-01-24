@@ -25,47 +25,15 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
-  }
-//    else if('/testest' == url) {
-//     res.writeHead(200, {'Content-Type': 'audio/x-wav'});
-//     res.on('end', function(){
-//       res.end();
-//     });
-//     req.pipe(res);
-// } else if('/stt' == url) {
-//     var data = require('./stt.js');
-//     function callback(d) {
-//       if(d.privText != undefined) {
-//         console.log(d.privText);
-//         res.writeHead(200, {'Content-Type': 'text/plain'});
-//         res.write(d.privText);
-//       } else if(d == false) {
-//         console.log('error');
-//         res.writeHead(200, {'Content-Type': 'text/plain'});
-//         res.write('error');
-//       } else {
-//         console.log('失敗したよ');
-//         res.writeHead(200, {'Content-Type': 'text/plain'});
-//         var retText = '失敗したよ';
-//         // Object.keys(d).forEach(function(key){
-//         //   retText += key +': '+ this[key] + ';';
-//         // }, d);
-//         res.write('error '+retText);
-//       }
-//       res.end();
-//     }
-
-//     data.stt(req, callback);
-
-//     // var testwav = fs.createWriteStream('test.wav');
-//     // testwav.on('pipe', function(){
-//     //   data.stt(req, callback);
-//     // });
-//     // req.pipe(testwav);
-//   } 
-  else if('/img/icon.jpeg' == url) {
+  }else if('/img/icon.jpeg' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'image/jpeg'});
+        res.write(data);
+        res.end();
+    });
+  }else if('/img/icon.png' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'image/png'});
         res.write(data);
         res.end();
     });
