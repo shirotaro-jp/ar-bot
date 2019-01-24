@@ -59,7 +59,7 @@ function saveAudio(accessToken, text, callback) {
             'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm',
             'Content-Type': 'application/ssml+xml'
         },
-        body: '<speak version=\'1.0\' xmlns="http://www.w3.org/2001/10/synthesis" xml:lang=\'ja-JP\'>\n<voice  name=\'Microsoft Server Speech Text to Speech Voice (ja-JP, Ayumi, Apollo)\'>' + text + '</voice> </speak>'
+        body: '<speak version=\'1.0\' xmlns="http://www.w3.org/2001/10/synthesis" xml:lang=\'ja-JP\'>\n<voice  name=\'Microsoft Server Speech Text to Speech Voice (ja-JP, Ichiro, Apollo)"\'>' + text + '</voice> </speak>'
     };
     // This function makes the request to convert speech to text.
     // The speech is returned as the response.
