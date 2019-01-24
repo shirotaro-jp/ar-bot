@@ -332,13 +332,41 @@ $(document).ready(function(){
   });
 
   // ギフトボタンクリック時
+  // Audio 用の buffer を読み込む
+  var getAudioBuffer = function(url, fn) {  
+    var req = new XMLHttpRequest();
+    // array buffer を指定
+    req.responseType = 'arraybuffer';
+
+    req.onreadystatechange = function() {
+      if (req.readyState === 4) {
+        if (req.status === 0 || req.status === 200) {
+          // array buffer を audio buffer に変換
+          audioContext.decodeAudioData(req.response, function(buffer) {
+            // コールバックを実行
+            fn(buffer);
+          });
+        }
+      }
+  };
+
+  req.open('GET', url, true);
+  req.send('');
+};
   $( "#present" ).click(function() {
+    
+    // サウンドを読み込む
+    getAudioBuffer('wav/beer.wav', function(buffer) {
+      console.log('play');
+      // コールバックを実行
+      playSound(buffer);
+    });
 
     var gel = document.querySelector('#gift-object');
     gel.setAttribute('visible', true);
     setTimeout(function(){
       gel.setAttribute('visible', false);
-    },3000);
+    },4000);
 
   });
 
@@ -404,45 +432,7 @@ $(document).ready(function(){
         console.log("#3", message); // sttが返したテキスト
         sendMessage(convId, message, ttsStart);
       });
-/*
-    var oReq = new XMLHttpRequest();
-    oReq.open("POST", '/stt', true);
-    oReq.responseType = "text/plain";
-    oReq.setRequestHeader("Content-Type", "application/octet-stream");
-    oReq.onload = function (oEvent) {
-      var message = oEvent.target.response;
-      console.log("#3", message); // sttが返したテキスト
-      sendMessage(convId, message, function(retMessage){
-        console.log("#4", retMessage); // botが返した文章
-        $('#botText').append('<p>'+retMessage+'</p>');
 
-        var req = new XMLHttpRequest();
-        req.open("POST", '/tts', true);
-        req.responseType = "arraybuffer";
-        req.setRequestHeader("Content-Type", "application/json");
-        req.onreadystatechange = function (oEvent) { // 状態が変化すると関数が呼び出されます。
-          if (req.readyState === 4) {
-            if (req.status === 0 || req.status === 200) {
-              var resWav = req.response;
-              console.log('#5', resWav);
-              // サウンドを読み込む
-
-              audioContext.decodeAudioData(resWav, function(buffer) {
-                console.log('play');
-                // コールバックを実行
-                playSound(buffer);
-              });
-
-              $('#start').show();
-            }
-          }
-        }
-        req.send(JSON.stringify({"data": retMessage}));
-      });
-    };
-
-    oReq.send(wav);
-    */
   });
   audioContext = new AudioContext();
   navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess);

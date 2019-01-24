@@ -103,6 +103,12 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
+  } else if('/wav/beer.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
   } else if('/bot' == url) {
   } else if('/tts' == url) {
     var data = require('./tts.js');
