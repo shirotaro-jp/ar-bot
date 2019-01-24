@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+</head>
+<body>
+        
+    <a-scene vr-mode-ui="enabled: false">
+
+        <a-assets>
+            <a-asset-item id="man-obj" src="obj/model.obj"></a-asset-item>
+            <a-asset-item id="man-mtl" src="obj/materials.mtl"></a-asset-item>
+            <a-asset-item id="crate-obj" src="obj/Beer.obj"></a-asset-item>
+            <a-asset-item id="crate-mtl" src="obj/Beer.mtl"></a-asset-item>
+        </a-assets>
+    
+        <a-obj-model src="#man-obj" mtl="#man-mtl" position="0 2 -5" rotation="0 -145 0" id="object">
+            <a-obj-model src="#crate-obj" mtl="#crate-mtl" rotation="0 130 0" position="0 -1.2 0"></a-obj-model>
+        </a-obj-model>
+    
+    </a-scene>
+    
+    <h2 style="width: 80%; height: 8%; position: fixed; top: 5%; left: 10%; z-index: 9999;">WEB AR</h2>
+    <h1 style="width: 80%; height: 8%; position: fixed; top: 10%; left: 10%; z-index: 9999;">妖精おじさん</h1>
+    <a href="test.html">
+        <button style="width: 24%; height: 6%; position: fixed; top: 80%; left: 38%; z-index: 9999;" class="btn">START</button>
+    </a>
+    
+    <style>
+    .btn{
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #00BCD4;
+    background: #ECECEC;
+    transition: .4s;
+    }
+
+    .btn:hover {
+        background: #00bcd4;
+        color: white;
+    }
+    </style>
+</body>
+</html>

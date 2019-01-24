@@ -14,6 +14,12 @@ function doRequest(req, res) {
   var url = req.url;
   console.log(url);
   if ('/' == url) {
+    fs.readFile('./index.html', 'UTF-8', function (err, data) {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.write(data);
+        res.end();
+    });
+  }else if('/test.html' == url) {
     fs.readFile('./test.html', 'UTF-8', function (err, data) {
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data);
@@ -156,16 +162,13 @@ function doRequest(req, res) {
       res.write(data);
       res.end();
     });
-  // } else if('/test.wav' == url) {
-  //   fs.readFile('./test.wav',function (err, data) {
-  //     res.writeHead(200, {
-  //       'Content-Type': 'audio/wav',
-  //       'Cache-Control': "no-cache"
-  //     });
-  //     res.write(data);
-  //     res.end();
-  //   });
-} else if('/js/microsoft.cognitiveservices.speech.sdk.bundle-min.js' == url) {
+  } else if('/index.js' == url) {
+    fs.readFile('./'+url, 'UTF-8',function (err, data) {
+      res.writeHead(200, {'Content-Type': 'text/plain'});
+      res.write(data);
+      res.end();
+    });
+  } else if('/js/microsoft.cognitiveservices.speech.sdk.bundle-min.js' == url) {
     fs.readFile('./js/microsoft.cognitiveservices.speech.sdk.bundle-min.js', 'UTF-8',function (err, data) {
       res.writeHead(200, {'Content-Type': 'text/plain'});
       res.write(data);
