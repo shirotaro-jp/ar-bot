@@ -13,7 +13,7 @@ const request = require('request');
 function doRequest(req, res) {
   var url = req.url;
   console.log(url);
-  if ('/' == url) {
+  if ('/' == url || '/index.html' == url) {
     fs.readFile('./index.html', 'UTF-8', function (err, data) {
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.write(data);
