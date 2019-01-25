@@ -12,10 +12,6 @@ var hour = nowtime.getHours();
 //     $('#dev_info').append('<p>今'+hour+'時</p>');
 // });
 
-// ネットワーク種類　うまくいかない(localダメ)（httpsダメ）
-// var network = navigator.connection.type;
-// console.log('ネット接続 '+network);
-
 var visible_flag = true;
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
@@ -191,7 +187,7 @@ function getBotId() {
       method: "POST",
       contentType: "application/json",
       headers: {
-        Authorization: "Bearer 63wSAKFA9Gk.cwA.TGU.VLwmbXPVpEVJk7QutSebgJFyrhSqAMCnLFEm-WcypF0"
+        Authorization: "Bearer BaCbV_EFfiA.cwA.r14.BcHZQZSWV08jWaSIoaBkcX0rNz33E45oXyBq7Q_ffM8"
       },
       url: "https://directline.botframework.com/v3/directline/conversations",
       success: function(data){
@@ -210,7 +206,7 @@ function sendMessage(cId, msg, callback) {
     method: "POST",
     contentType: "application/json",
     headers: {
-      Authorization: "Bearer 63wSAKFA9Gk.cwA.TGU.VLwmbXPVpEVJk7QutSebgJFyrhSqAMCnLFEm-WcypF0"
+      Authorization: "Bearer BaCbV_EFfiA.cwA.r14.BcHZQZSWV08jWaSIoaBkcX0rNz33E45oXyBq7Q_ffM8"
     },
     url: 'https://directline.botframework.com/v3/directline/conversations/' + cId + '/activities',
     data: JSON.stringify({
@@ -245,14 +241,14 @@ function getMessage(cId, wmark, callback) {
         method: "GET",
         contentType: "application/json",
         headers: {
-          Authorization: "Bearer 63wSAKFA9Gk.cwA.TGU.VLwmbXPVpEVJk7QutSebgJFyrhSqAMCnLFEm-WcypF0"
+          Authorization: "Bearer BaCbV_EFfiA.cwA.r14.BcHZQZSWV08jWaSIoaBkcX0rNz33E45oXyBq7Q_ffM8"
         },
         url: url,
         success: function (data) {
           //console.log(JSON.stringify(data));
           watermark = data.watermark;
           data.activities.forEach(function(val){
-            if(val.from.id == 'arbot-forgga'){
+            if(val.from.id == 'GGAjp'){
               messageText = val.text;
               callback(val.text);
             }
