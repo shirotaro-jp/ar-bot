@@ -379,7 +379,7 @@ $(document).ready(function(){
   });
 
   // おじさんクリック時
-  $( "#object" ).click(function() {
+  $( "#oldman" ).click(function() {
     
     // サウンドを読み込む
     // どの音を再生するか
