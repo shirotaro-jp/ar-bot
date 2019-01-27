@@ -71,6 +71,7 @@ window.addEventListener('deviceorientation', function(event) {
     if(!visible_flag) {
       $('#ng').hide();
       $('#oldman').show();
+      $("img").attr("alt","ojisan");
       el.setAttribute('visible', true);
       visible_flag = true;
     }
@@ -78,6 +79,7 @@ window.addEventListener('deviceorientation', function(event) {
     if(visible_flag) {
       $('#ng').show();
       $('#oldman').hide();
+      $("img").attr("alt","no-ojisan");
       el.setAttribute('visible', false);
       visible_flag = false;
     }
@@ -219,7 +221,7 @@ function sendMessage(cId, msg, callback) {
       "text": msg
       }),
     success: function (obj) {
-    　//console.log("メッセージを送りました！");
+      //console.log("メッセージを送りました！");
       getMessage(cId, watermark, callback);
     }
   });
@@ -355,22 +357,24 @@ $(document).ready(function(){
 
   // ギフトボタンクリック時
   $( "#present" ).click(function() {
-    
-    // サウンドを読み込む
-    // どの音を再生するか
-    var random = Math.floor( Math.random() * 3 ); //0~2
-    var sound = "";
-    sound = 'wav/beer'+random+'.wav';
-    //0:えっ。いいとっ。ありがと
-    //1:ビール、一緒に飲もうよ
-    //2:ありが唐辛子
-    //3:
-    //4:
-    getAudioBuffer(sound, function(buffer) {
-      console.log('play');
-      // コールバックを実行
-      playSound(buffer);
-    });
+    var alt = $(this).children('img').attr('alt');
+    if(alt = 'ojisan'){
+      // サウンドを読み込む
+      // どの音を再生するか
+      var random = Math.floor( Math.random() * 3 ); //0~2
+      var sound = "";
+      sound = 'wav/beer'+random+'.wav';
+      //0:えっ。いいとっ。ありがと
+      //1:ビール、一緒に飲もうよ
+      //2:ありが唐辛子
+      //3:
+      //4:
+      getAudioBuffer(sound, function(buffer) {
+        console.log('play');
+        // コールバックを実行
+        playSound(buffer);
+      });
+    }
 
     var gel = document.querySelector('#gift-object');
     gel.setAttribute('visible', true);
