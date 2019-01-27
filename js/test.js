@@ -70,12 +70,14 @@ window.addEventListener('deviceorientation', function(event) {
   if(headingdifference < 60){
     if(!visible_flag) {
       $('#ng').hide();
+      $('#oldman').show();
       el.setAttribute('visible', true);
       visible_flag = true;
     }
   }else{
     if(visible_flag) {
       $('#ng').show();
+      $('#oldman').hide();
       el.setAttribute('visible', false);
       visible_flag = false;
     }
