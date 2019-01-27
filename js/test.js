@@ -357,8 +357,8 @@ $(document).ready(function(){
 
   // ギフトボタンクリック時
   $( "#present" ).click(function() {
-    var alt = $(this).children('img').attr('alt');
-    if(alt = 'ojisan'){
+    var beeralt = $(this).attr('alt');
+    if(beeralt == 'ojisan'){
       // サウンドを読み込む
       // どの音を再生するか
       var random = Math.floor( Math.random() * 3 ); //0~2
