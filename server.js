@@ -103,7 +103,49 @@ function doRequest(req, res) {
         res.write(data);
         res.end();
     });
-  } else if('/wav/beer.wav' == url) {
+  } else if('/wav/beer0.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/wav/beer1.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/wav/beer2.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/wav/touch0.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/wav/touch1.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/wav/touch2.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/wav/touch3.wav' == url) {
+    fs.readFile('./'+url, {encoding: null},function (err, data) {
+        res.writeHead(200, {'Content-Type': 'audio/wav'});
+        res.write(data);
+        res.end();
+    });
+  } else if('/wav/touch4.wav' == url) {
     fs.readFile('./'+url, {encoding: null},function (err, data) {
         res.writeHead(200, {'Content-Type': 'audio/wav'});
         res.write(data);

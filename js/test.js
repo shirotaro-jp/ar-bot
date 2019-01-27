@@ -327,7 +327,7 @@ $(document).ready(function(){
     alert( "周りを見渡して、おじさんを探してみてね！" );
   });
 
-  // ギフトボタンクリック時
+  
   // Audio 用の buffer を読み込む
   var getAudioBuffer = function(url, fn) {  
     var req = new XMLHttpRequest();
@@ -344,15 +344,27 @@ $(document).ready(function(){
           });
         }
       }
-  };
+    };
 
-  req.open('GET', url, true);
-  req.send('');
-};
+    req.open('GET', url, true);
+    req.send('');
+  };
+  
+
+  // ギフトボタンクリック時
   $( "#present" ).click(function() {
     
     // サウンドを読み込む
-    getAudioBuffer('wav/beer.wav', function(buffer) {
+    // どの音を再生するか
+    var random = Math.floor( Math.random() * 3 ); //0~2
+    var sound = "";
+    sound = 'wav/beer'+random+'.wav';
+    //0:えっ。いいとっ。ありがと
+    //1:ビール、一緒に飲もうよ
+    //2:ありが唐辛子
+    //3:
+    //4:
+    getAudioBuffer(sound, function(buffer) {
       console.log('play');
       // コールバックを実行
       playSound(buffer);
@@ -365,6 +377,28 @@ $(document).ready(function(){
     },4000);
 
   });
+
+  // おじさんクリック時
+  $( "#object" ).click(function() {
+    
+    // サウンドを読み込む
+    // どの音を再生するか
+    var random = Math.floor( Math.random() * 5 ); //0~4
+    var sound = "";
+    sound = 'wav/touch'+random+'.wav';
+    //0:優しく触ってね
+    //1:好きよねぇ。ボディータッチ。
+    //2:今日も綺麗だねぇ。
+    //3:今日も可愛いねぇ。
+    //4:もっと近づいて欲しいなぁ。
+    getAudioBuffer(sound, function(buffer) {
+      console.log('play');
+      // コールバックを実行
+      playSound(buffer);
+    });
+
+  });
+
 
   // ** Start #1 **
   $('#start').click(function(){
