@@ -380,26 +380,26 @@ $(document).ready(function(){
 
   });
 
-  // おじさんクリック時
-  $( "#oldman" ).click(function() {
+  // // おじさんクリック時
+  // $( "#oldman" ).click(function() {
     
-    // サウンドを読み込む
-    // どの音を再生するか
-    var random = Math.floor( Math.random() * 5 ); //0~4
-    var sound = "";
-    sound = 'wav/touch'+random+'.wav';
-    //0:優しく触ってね
-    //1:好きよねぇ。ボディータッチ。
-    //2:今日も綺麗だねぇ。
-    //3:今日も可愛いねぇ。
-    //4:もっと近づいて欲しいなぁ。
-    getAudioBuffer(sound, function(buffer) {
-      console.log('play');
-      // コールバックを実行
-      playSound(buffer);
-    });
+  //   // サウンドを読み込む
+  //   // どの音を再生するか
+  //   var random = Math.floor( Math.random() * 5 ); //0~4
+  //   var sound = "";
+  //   sound = 'wav/touch'+random+'.wav';
+  //   //0:優しく触ってね
+  //   //1:好きよねぇ。ボディータッチ。
+  //   //2:今日も綺麗だねぇ。
+  //   //3:今日も可愛いねぇ。
+  //   //4:もっと近づいて欲しいなぁ。
+  //   getAudioBuffer(sound, function(buffer) {
+  //     console.log('play');
+  //     // コールバックを実行
+  //     playSound(buffer);
+  //   });
 
-  });
+  // });
 
 
   // ** Start #1 **
